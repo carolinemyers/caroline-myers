@@ -29,18 +29,33 @@ function el(tag, attrs={}, children=[]){
 }
 
 function iconSVG(kind){
-  // Tiny inline SVGs (no external library).
-  const common = 'width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"';
-  if(kind === "email"){
+  // Minimal inline icons (Google-y, clean).
+  const common = 'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"';
+  const k = (kind || "").toLowerCase();
+
+  if(k === "email"){
     return `<svg ${common}><path d="M4 4h16v16H4z"/><path d="m22 6-10 7L2 6"/></svg>`;
   }
-  if(kind === "link"){
-    return `<svg ${common}><path d="M10 13a5 5 0 0 1 0-7l1-1a5 5 0 0 1 7 7l-1 1"/><path d="M14 11a5 5 0 0 1 0 7l-1 1a5 5 0 0 1-7-7l1-1"/></svg>`;
-  }
-  if(kind === "file"){
+  if(k === "file" || k === "pdf" || k === "cv"){
     return `<svg ${common}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>`;
   }
-  return `<svg ${common}><circle cx="12" cy="12" r="10"/></svg>`;
+  if(k === "github"){
+    return `<svg ${common}><path d="M9 19c-4 1.5-4-2.5-5-3"/><path d="M14 22v-3.5c0-1 .1-1.7-.5-2.4 1.8-.2 3.7-.9 3.7-4.1 0-.9-.3-1.7-.9-2.3.1-.2.4-1-.1-2.1 0 0-.7-.2-2.3.9-.7-.2-1.5-.3-2.2-.3s-1.5.1-2.2.3c-1.6-1.1-2.3-.9-2.3-.9-.5 1.1-.2 1.9-.1 2.1-.6.6-.9 1.4-.9 2.3 0 3.2 1.9 3.9 3.7 4.1-.4.5-.6 1.2-.5 1.9V22"/></svg>`;
+  }
+  if(k === "orcid"){
+    return `<svg ${common}><circle cx="12" cy="12" r="9"/><path d="M10 10v7"/><path d="M10 7h.01"/><path d="M13 10h2.2c2.2 0 3.8 1.6 3.8 3.5S17.4 17 15.2 17H13v-7Z"/></svg>`;
+  }
+  if(k === "scholar" || k === "googlescholar" || k === "google-scholar"){
+    return `<svg ${common}><path d="M12 3 2 8l10 5 10-5-10-5Z"/><path d="M4 10v6c0 2 4 4 8 4s8-2 8-4v-6"/><path d="M8.5 13.5v3"/><path d="M15.5 13.5v3"/></svg>`;
+  }
+  if(k === "youtube" || k === "video"){
+    return `<svg ${common}><path d="M22 12s0-3-1-4-4-1-9-1-8 0-9 1-1 4-1 4 0 3 1 4 4 1 9 1 8 0 9-1 1-4 1-4Z"/><path d="m10 9 6 3-6 3V9Z"/></svg>`;
+  }
+  if(k === "osf"){
+    return `<svg ${common}><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M7.5 16.5 12 21l4.5-4.5"/><path d="M3 12h18"/></svg>`;
+  }
+  // Default: link icon
+  return `<svg ${common}><path d="M10 13a5 5 0 0 1 0-7l1-1a5 5 0 1 1 7 7l-1 1"/><path d="M14 11a5 5 0 0 1 0 7l-1 1a5 5 0 0 1-7-7l1-1"/></svg>`;
 }
 
 function setActiveNav(){
@@ -87,6 +102,8 @@ function unique(arr){
 }
 
 async function init(){
+  // Presentations
+  loadPresentations();
   // Footer year
   const yearEl = document.getElementById("year");
   if(yearEl) yearEl.textContent = String(new Date().getFullYear());
@@ -126,13 +143,15 @@ async function init(){
   // Hero quick links
   const heroLinks = document.getElementById("hero-links");
   if(heroLinks && site.quickLinks){
-    heroLinks.innerHTML = "";
+    heroLinks.innerHTML = ""; heroLinks.classList.add("icon-grid");
     for(const q of site.quickLinks){
-      const kind = q.kind || (q.href?.startsWith("mailto:") ? "email" : "link");
-      const cls = q.primary ? "button primary" : "button";
-      const a = el("a", { class: cls, href: q.href, target: q.href.startsWith("#") ? "_self" : "_blank", rel: "noreferrer" }, [
+      const kindGuess = (q.icon || q.kind || "").toLowerCase();
+      const label = q.label || "";
+      const kind = kindGuess || (label.toLowerCase().includes("scholar") ? "scholar" : label.toLowerCase().includes("orcid") ? "orcid" : label.toLowerCase().includes("github") ? "github" : label.toLowerCase().includes("osf") ? "osf" : label.toLowerCase().includes("cv") ? "cv" : (q.href?.startsWith("mailto:") ? "email" : (q.href?.includes("youtu") ? "youtube" : "link")));
+      const a = el("a", { class: "icon-tile", href: q.href,
+        target: q.href.startsWith("#") ? "_self" : "_blank", rel: "noreferrer" }, [
         el("span", { html: iconSVG(kind) }),
-        q.label
+        el("div", { class: "label" }, [label])
       ]);
       heroLinks.appendChild(a);
     }
@@ -312,3 +331,97 @@ init().catch(err => {
     main.prepend(msg);
   }
 });
+
+
+
+/* ===== Presentations support (v3) ===== */
+function safeText(v){ return (v ?? "").toString(); }
+
+function renderPresentations(items){
+  const root = document.getElementById("presentations-list");
+  if(!root) return;
+  root.innerHTML = "";
+  if(!Array.isArray(items) || items.length === 0){
+    root.innerHTML = '<div class="card"><div class="pad">No presentations yet — add entries in <code>data/presentations.json</code>.</div></div>';
+    return;
+  }
+
+  const html = items
+    .sort((a,b)=> (b.year||0) - (a.year||0))
+    .map(p=>{
+      const title = escapeHtml(safeText(p.title));
+      const authors = escapeHtml(safeText(p.authors));
+      const venue = escapeHtml(safeText(p.venue));
+      const year = escapeHtml(safeText(p.year));
+      const type = escapeHtml(safeText(p.type));
+      const desc = escapeHtml(safeText(p.description));
+
+      const tagPills = (p.tags||[]).map(t=>`<span class="pill">${escapeHtml(t)}</span>`).join("");
+
+      let embed = "";
+      let buttons = "";
+
+      if(p.pdf && safeText(p.pdf).trim()){
+        const pdf = safeText(p.pdf).trim();
+        embed = `
+          <div class="embed-frame">
+            <div class="ratio-16x9">
+              <iframe src="${pdf}#view=FitH" title="${title} PDF preview" loading="lazy"></iframe>
+            </div>
+          </div>`;
+        buttons = `<a class="button" href="${pdf}" target="_blank" rel="noopener">Open PDF</a>`;
+      } else if(p.youtubeId && safeText(p.youtubeId).trim()){
+        const yid = safeText(p.youtubeId).trim();
+        const yt = `https://www.youtube-nocookie.com/embed/${yid}`;
+        embed = `
+          <div class="embed-frame">
+            <div class="ratio-16x9">
+              <iframe src="${yt}" title="${title} video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+          </div>`;
+        buttons = `<a class="button" href="https://youtu.be/${yid}" target="_blank" rel="noopener">Open on YouTube</a>`;
+      }
+
+      return `
+        <div class="card presentation-card">
+          <div class="pad">
+            <div style="display:flex; justify-content:space-between; gap:12px; align-items:flex-start; flex-wrap:wrap;">
+              <div>
+                <div class="section-title" style="margin:0 0 4px 0;">${title}</div>
+                <div class="muted small">${authors}</div>
+              </div>
+              <div class="meta">
+                ${type ? `<span class="pill">${type}</span>` : ""}
+                ${venue ? `<span class="pill">${venue}</span>` : ""}
+                ${year ? `<span class="pill">${year}</span>` : ""}
+              </div>
+            </div>
+
+            ${desc ? `<p style="margin:10px 0 12px;">${desc}</p>` : ""}
+
+            ${tagPills ? `<div class="pill-row" style="margin: 0 0 12px;">${tagPills}</div>` : ""}
+
+            ${embed}
+
+            ${buttons ? `<div class="pub-links" style="margin-top:12px;">${buttons}</div>` : ""}
+          </div>
+        </div>
+      `;
+    }).join("");
+
+  root.innerHTML = html;
+}
+
+async function loadPresentations(){
+  try{
+    const resp = await fetch("data/presentations.json");
+    if(!resp.ok) throw new Error("Failed to load presentations.json");
+    const items = await resp.json();
+    renderPresentations(items);
+  }catch(e){
+    const root = document.getElementById("presentations-list");
+    if(root){
+      root.innerHTML = '<div class="card"><div class="pad">Could not load <code>data/presentations.json</code>. Check the file exists and is valid JSON.</div></div>';
+    }
+  }
+}

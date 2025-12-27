@@ -1,6 +1,8 @@
 # Personal Website (GitHub Pages) — plain HTML/CSS/JS
 
-This is a **no-build-step** website: just static files. You edit JSON + drop in PDFs/images, push to GitHub, and GitHub Pages hosts it.
+#This lives under 'website' in CM_Experiments. Add files as described below, and then re-upload the entire contents of website (NOT THE TOP FOLDER 'website' BUT EVERYTHING IN IT) to github. 
+
+Just static files. I edit JSON + drop in PDFs/images, push to GitHub, and GitHub Pages hosts it.
 
 ---
 
@@ -29,7 +31,7 @@ This is a **no-build-step** website: just static files. You edit JSON + drop in 
 
 1. Replace the placeholder email/address + links:
    - Edit **data/site.json**
-2. Add your photo:
+2. Add photo:
    - Put your image at **assets/img/profile.jpg** (or change the filename in `index.html`)
 3. Add your CV:
    - Put your PDF at **files/cv/CV.pdf**
@@ -105,3 +107,14 @@ You can use any repo name, but set Pages to deploy from `main` (root).
 ---
 
 If you want, you can delete the placeholder entries in the JSON files once you add your real content.
+
+
+## Publication images (thumbnails)
+Put one image per paper in `assets/img/pubs/` and set the `image` field for that entry in `data/publications.json`.
+Example: `"image": "assets/img/pubs/myers2025.png"`
+
+
+## Presentations
+- Put poster/talk PDFs in `files/presentations/`
+- List entries in `data/presentations.json`
+- For a YouTube embed, add `youtubeId` (the part after `v=`).

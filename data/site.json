@@ -9,6 +9,10 @@
       "label": "Publications"
     },
     {
+      "id": "presentations",
+      "label": "Presentations"
+    },
+    {
       "id": "cv",
       "label": "CV"
     },
@@ -41,17 +45,20 @@
     {
       "label": "CV (PDF)",
       "href": "files/cv/CV.pdf",
-      "kind": "file"
+      "kind": "file",
+      "icon": "cv"
     },
     {
       "label": "Google Scholar",
       "href": "https://scholar.google.com/",
-      "kind": "link"
+      "kind": "link",
+      "icon": "scholar"
     },
     {
       "label": "OSF",
       "href": "https://osf.io/",
-      "kind": "link"
+      "kind": "link",
+      "icon": "osf"
     }
   ],
   "elsewhere": [
