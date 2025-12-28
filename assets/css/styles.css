@@ -479,7 +479,7 @@ h1,h2,h3{
 
 .small, .muted{ color: var(--muted); }
 
-/* Publications layout with optional thumbnail */
+/* Publications layout with optional thumbnail
 .pub-entry.pub-item{
   display: grid;
   grid-template-columns: 96px 1fr;
@@ -497,6 +497,38 @@ h1,h2,h3{
 @media (max-width: 640px){
   .pub-entry.pub-item{ grid-template-columns: 1fr; }
   .pub-thumb{ width: 100%; height: 180px; }
+} */
+
+/* Publication list layout */
+.pub-entry.pub-item{
+  display: grid;
+  grid-template-columns: 200px 1fr; /* FIXED column → consistent alignment */
+  column-gap: 16px;
+  align-items: center;
+}
+
+/* Rectangular thumbnail box */
+.pub-thumb{
+  width: 200px;
+  height: 100px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  object-fit: cover;   /* image fills box without affecting layout */
+}
+
+/* Placeholder when no image */
+.pub-thumb--empty{
+  background: linear-gradient(
+    135deg,
+    var(--surface-2),
+    var(--surface-3)
+  );
+}
+
+/* Right-hand text block */
+.pub-content{
+  display: block;
 }
 
 
@@ -691,60 +723,100 @@ a:hover{ color: var(--accent); }
 
 
 
-/* ===== Home refresh (professional, not corny) ===== */
-.kicker{
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent-2);
-  margin-bottom: 8px;
+/* ===== Landing page refresh (minimal, v1) ===== */
+.hero-narrow{
+  max-width: 980px;
 }
-.lead{
-  font-size: 18px;
+.hero-photo{
+  width: 100%;
+  margin: 0 auto 18px;
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+.hero-photo img{
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Name headline (name only; no corny tagline) */
+.name-headline{
+  margin: 10px 0 8px;
+  font-size: clamp(34px, 4vw, 46px);
+  letter-spacing: -0.02em;
+}
+.hero-text{
+  text-align: left;
+}
+.hero-lede{
+  font-size: 1.05rem;
+  margin-top: 0;
+  max-width: 78ch;
+}
+
+/* Research questions block */
+.rq{
+  margin-top: 18px;
+}
+.rq-title{
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 2px;
+}
+.rq-subtitle{
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+.rq-list{
+  display: grid;
+  gap: 10px;
+}
+.rq-item{
+  width: 100%;
+  text-align: left;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--surface), var(--surface-2));
+  padding: 14px 14px;
+  cursor: pointer;
+  transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+}
+.rq-item:hover{
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(47, 91, 255, 0.22);
+}
+.rq-q{
+  display:block;
+  font-weight: 650;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.rq-meta{
+  display:block;
   color: var(--muted);
+  font-size: 0.92rem;
+}
+.rq-hint{
   margin-top: 10px;
 }
-.hero-copy h1{
-  font-size: clamp(28px, 3.2vw, 40px);
-  line-height: 1.12;
-  letter-spacing: -0.02em;
-  margin: 0;
-}
 
-.hero-cards{
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  margin: 16px 0 8px;
-}
-@media (max-width: 840px){
-  .hero-cards{ grid-template-columns: 1fr; }
-}
-.mini-card{
-  border: 1px solid rgba(47, 91, 255, 0.18);
-  background: linear-gradient(180deg, var(--surface), var(--surface-2));
-  border-radius: 18px;
-  padding: 12px 12px;
-  box-shadow: 0 1px 0 rgba(2,8,23,0.02);
-}
-.mini-title{
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--navy);
-  margin-bottom: 6px;
-}
-.mini-body{
-  font-size: 14px;
-  color: var(--muted);
-}
-
-/* PDF embeds */
+/* CV embed: use <object> for better compatibility */
 .pdf-embed{
   width: 100%;
-  height: min(75vh, 900px);
+  height: 900px;
   border: 1px solid var(--border);
-  border-radius: 18px;
+  border-radius: 16px;
   background: var(--surface-2);
   overflow: hidden;
+}
+.pdf-embed iframe{ width:100%; height:100%; border:0; } /* harmless if iframe removed */
+.pdf-object{
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
 }
