@@ -36,42 +36,46 @@
   <main id="main">
     <!-- HERO / ABOUT -->
     <section id="home" class="section hero">
-      <div class="container hero-grid">
-        <figure class="profile">
-          <img src="assets/img/profile.jpg" alt="Portrait of Caroline Myers" loading="lazy" />
-          <figcaption class="muted"> </figcaption>
-        </figure>
+  <div class="container hero-grid">
+    <figure class="profile">
+      <img src="assets/img/profile.jpg" alt="Portrait of Caroline Myers" loading="lazy" />
+    </figure>
 
-        <div class="hero-copy">
-          <h1>Hi there!</h1>
-          <p>
-            I’m a vision scientist studying how perception and attention interact over space and time.
-            A lot of my work uses psychophysics to ask about the representational format and content of perception, particularly how the internal structure of perceptual representations enables our experience of a coherent, stable world. 
-            and how it stays stable even when objects move.
-          </p>
-          <p>
-            I’m especially interested in adaptation and reference frames (retinotopic vs. object‑based/spatiotopic),
-            and in the relationship between sensory traces and working memory.
-          </p>
-          <p class="hero-links" id="hero-links">
-            <!-- populated by JS from data/site.json -->
-          </p>
+    <div class="hero-copy">
+      <div class="kicker">Caroline Myers</div>
+      <h1>Vision science: how perception stays stable when the world moves.</h1>
+      <p class="lead">
+        Ph.D. candidate at Johns Hopkins University studying visual perception and attention with psychophysics.
+        I’m especially interested in adaptation and reference frames (retinotopic vs. object‑based/spatiotopic),
+        and what those constraints reveal about the format of perceptual representations.
+      </p>
 
-             <!-- https://perception.jhu.edu/vsg/index.html -->
-          <div class="badge-row" aria-label="Affiliations and quick links">
-            <!-- Add your “always present” icons here (SVGs stored in assets/icons/) -->
-            <a class="badge" href="#" target="_blank" rel="noreferrer">
-              <img src="assets/icons/JHUVisionSciencesGroupLogo.svg" alt="" aria-hidden="true" />
-              <span>JHU Vision Sciences</span>
-            </a>
-            <a class="badge" href="#" target="_blank" rel="noreferrer">
-              <img src="assets/icons/HalberdaLab.svg" alt="" aria-hidden="true" />
-              <span>Vision Lab @ JHU</span>
-            </a>
-          </div>
+      <div class="hero-cards">
+        <div class="mini-card">
+          <div class="mini-title">Current focus</div>
+          <div class="mini-body">Object‑based adaptation • Spatiotopic stability • Visual number & feature processing</div>
+        </div>
+        <div class="mini-card">
+          <div class="mini-title">Recent work</div>
+          <div class="mini-body">Current Biology (2025) • iScience (2025) • Nature Reviews Psychology (2022)</div>
         </div>
       </div>
-    </section>
+
+      <div id="hero-links" class="hero-links" aria-label="Quick links"></div>
+
+      <div class="badge-row" aria-label="Affiliations and quick links">
+        <a class="badge" href="https://perception.jhu.edu/vsg/index.html" target="_blank" rel="noreferrer">
+          <img src="assets/icons/JHUVisionSciencesGroupLogo.svg" alt="" aria-hidden="true" />
+          <span>JHU Vision Sciences</span>
+        </a>
+        <a class="badge" href="https://pbs.jhu.edu/" target="_blank" rel="noreferrer">
+          <img src="assets/icons/HalberdaLab.svg" alt="" aria-hidden="true" />
+          <span>PBS @ JHU</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
 
 
     <!-- PUBLICATIONS -->
@@ -99,17 +103,17 @@
       <div class="container">
         <div class="section-head">
           <h2>CV</h2>
-          <p class="muted">Put your CV PDF at <code>files/cv/CV.pdf</code>. This page will auto‑link to it.</p>
+          <p class="muted">Download the PDF or view it inline below.</p>
         </div>
 
         <div class="card">
           <div class="card-row">
             <a class="button" href="files/cv/CV.pdf" target="_blank" rel="noreferrer">Open CV (PDF)</a>
-            <span class="muted">If the embed below is blank, your PDF file name/path is wrong.</span>
+            
           </div>
-          <div class="pdf-embed">
-            <iframe title="CV PDF" src="files/cv/CV.pdf#view=FitH" loading="lazy"></iframe>
-          </div>
+          <object class="pdf-embed" data="files/cv/CV.pdf#view=FitH" type="application/pdf">
+            <p class="muted">Your browser blocked the inline preview. You can still <a href="files/cv/CV.pdf" target="_blank" rel="noreferrer">open the CV as a PDF</a>.</p>
+          </object>
         </div>
       </div>
     </section>

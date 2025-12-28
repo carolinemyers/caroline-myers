@@ -178,10 +178,11 @@ async function init(){
   }
 
   // Publications
-  const pubs = await fetchJSON("data/publications.json");
-  const pubList = document.getElementById("pub-list");
+  const pubsData = await fetchJSON("data/publications.json");
+  const pubs = Array.isArray(pubsData) ? pubsData : (pubsData.items || []);
+const pubList = document.getElementById("publications-list");
   const search = document.getElementById("pub-search");
-  const filters = document.getElementById("pub-filters");
+  const filters = document.getElementById("publications-filters");
 
   let all = (pubs.items || []).slice();
   // Newest first by year, then by "order" if provided
