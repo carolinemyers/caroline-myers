@@ -488,3 +488,43 @@ async function loadPresentations(){
     }
   }
 }
+
+
+
+/* ===== Research-question jump/filter (minimal) ===== */
+(function(){
+  function applyRQTags(tagCSV){
+    if(!tagCSV) return;
+    const tags = tagCSV.split(",").map(s=>s.trim()).filter(Boolean);
+    const chips = document.getElementById("publications-filters");
+    const search = document.getElementById("pub-search");
+    // Clear search (we're using tag filters)
+    if(search) search.value = "";
+
+    // If chips exist, click "All" first to clear, then click the first matching tag.
+    if(chips){
+      const allBtn = chips.querySelector('button[data-tag="All"]');
+      if(allBtn) allBtn.click();
+
+      // Prefer the first tag that exists as a chip; otherwise do nothing.
+      for(const t of tags){
+        const btn = chips.querySelector(`button[data-tag="${CSS.escape(t)}"]`);
+        if(btn){ btn.click(); break; }
+      }
+    }
+  }
+
+  document.addEventListener("click", (e)=>{
+    const btn = e.target.closest(".rq-item");
+    if(!btn) return;
+
+    const jump = btn.getAttribute("data-jump") || "publications";
+    const tags = btn.getAttribute("data-tags") || "";
+
+    // Navigate
+    window.location.hash = "#" + jump;
+
+    // Wait a tick for hash navigation + any render
+    setTimeout(()=>applyRQTags(tags), 60);
+  });
+})();
