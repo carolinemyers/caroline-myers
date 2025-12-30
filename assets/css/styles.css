@@ -757,16 +757,6 @@ a:hover{ color: var(--accent); }
   background: var(--surface);
 }
 
-.hero-copy{
-  text-align: left;
-}
-
-.hero-name{
-  margin-top: 0;
-  margin-bottom: 10px;
-  font-size: clamp(32px, 4vw, 44px);
-  letter-spacing: -0.02em;
-}
 
 /* Mobile: stack cleanly */
 @media (max-width: 700px){
@@ -789,27 +779,6 @@ a:hover{ color: var(--accent); }
   text-align: center;  /* centers name + paragraphs */
 }
 
-.hero .hero-image{
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.hero .hero-image img{
-  width: 320px;       /* reasonable portrait size */
-  max-width: 80vw;    /* responsive */
-  height: auto;
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  box-shadow: var(--shadow-sm);
-}
-
-/* Let the text be wide, but still readable */
-.hero .hero-copy{
-  max-width: 95ch;     /* wider than a typical reading column */
-  margin: 0 auto;
-}
 
 /* ===== v5 landing + button sanity (paste at end) ===== */
 
@@ -839,22 +808,19 @@ a:hover{ color: var(--accent); }
   text-align: center;
 }
 
-/* Center the image, keep its aspect ratio (your 4565x2259 will scale nicely) */
+
 .hero .hero-image img{
-  width: min(820px, 92vw);   /* “reasonable”: big but not insane */
-  height: auto;              /* preserves your original ratio */
-  border-radius: var(--r-xl);
+  width: 420px;        /* <-- CONTROL IMAGE SIZE HERE */
+  max-width: 90vw;     /* responsive on small screens */
+  height: auto;        /* preserves 4565 × 2259 ratio */
+  border-radius: var(--r-lg);
   border: 1px solid var(--border);
   background: var(--surface);
   box-shadow: var(--shadow-sm);
 }
 
 /* Let intro text be wide, centered */
-.hero .hero-copy{
-  max-width: 100ch;          /* wider than typical body copy */
-  margin: 0 auto;
-  text-align: center;
-}
+
 
 /* 3) IMPORTANT: stop making every <button> a glossy primary button */
 button{
@@ -918,3 +884,26 @@ a.button:hover, .button:hover{
   height: 34px;
   object-fit: contain;
 }
+
+/* Match Publications width + calmer name styling */
+
+
+.hero .hero-copy{
+  max-width: var(--maxw);
+  margin: 0 auto;
+  text-align: center;
+  font-size: 1rem; /* lock it to normal body size */
+}
+
+
+/* Force name to match section headers exactly */
+.hero-name{
+  font-family: var(--serif);
+  font-size: 1.85rem;
+  font-weight: 700;
+  margin: 12px 0 10px 0;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+}
+
+.hero .hero-copy h1{ font-size: 1.85rem !important; }
